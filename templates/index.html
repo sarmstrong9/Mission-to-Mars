@@ -48,6 +48,28 @@
                 </div>
             </div>
         </div>
+        <!-- Mars Hemisphere Data -->
+        <div class="row" id="mars-hemispheres">
+            <div class="col-md-8">
+
+                <center><h3>Mars Hemispheres</h3> </center>
+                <header>
+                    {% block header %}{% endblock %}
+                </header>
+                
+                {% for hemisphere_image_url in mars.hemisphere_image_urls %}
+                    
+                    <img
+                        src="{{ hemisphere_image_url.img_url }}"
+                        class="img-responsive"
+                        alt="Responsive image"
+                    />
+                    <div class="flash">{{ hemisphere_image_url.title }}</div>
+                {% endfor %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
     </div>
 </body>
 </html>

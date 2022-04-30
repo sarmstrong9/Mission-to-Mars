@@ -21,7 +21,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemisphere_image_urls": hemisphere_data(browser),
     }
 
     # Stop webdriver and return data
@@ -104,6 +105,57 @@ def mars_facts():
 
     #  convert our DataFrame back into HTML-ready code using the .to_html() function
     return df.to_html()
+
+# Hemisphere images and titles
+def hemisphere_data(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    # set up the HTML parser:
+    html = browser.html
+    hem_img_soup = soup(html, 'html.parser')
+
+    try:
+        product_pages = hem_img_soup.find_all('div', class_='item')
+
+        for product_page in product_pages:
+            hem_img_url_rel = product_page.find('a').get('href')
+
+            # Use the base URL to create an absolute URL for product urls
+            product_url = f'https://marshemispheres.com/{hem_img_url_rel}'
+            
+            # once on the individual product page, find urls for .jpg image
+            browser.visit(product_url)
+            html2 = browser.html
+            hem_prod_img_soup = soup(html2, 'html.parser')
+            
+            hem_prod_img_desc = hem_prod_img_soup.find('div', class_='downloads')
+            hem_prod_img_url_rel = hem_prod_img_desc.find('a').get('href')
+            
+            # Use the base URL to create an absolute URL for product urls
+            hem_prod_img_url = f'https://marshemispheres.com/{hem_prod_img_url_rel}'
+
+            # Get the title of the image
+            hem_prod_title_desc = hem_prod_img_soup.find('h2', class_='title').get_text()
+
+            hemispheres = {
+                "img_url": hem_prod_img_url,
+                "title": hem_prod_title_desc,
+            }
+            
+            hemisphere_image_urls.append(hemispheres)
+            
+            browser.back()
+
+    except AttributeError:
+        return None
+
+    return hemisphere_image_urls
+
 
 if __name__ == "__main__":
     # If running as script, print scraped data

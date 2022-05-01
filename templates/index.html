@@ -16,7 +16,7 @@
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
             <!-- Add a button to activate scraping script -->
-            <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+            <p><a class="btn btn-warning btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
         </div>
         <!-- Mars News -->
         <div class="row" id="mars-news">
@@ -32,7 +32,7 @@
         </div>
         <!-- Section for Featured Image and Facts table -->
         <div class="row" id="mars-featured-image">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <h2>Featured Mars Image</h2>
                 <img
                     src="{{mars.featured_image }}"
@@ -40,34 +40,38 @@
                     alt="Responsive image"
                 />
             </div>
-            <div class="col-md-4">
-                <!-- Mars Facts -->
+            <!-- Mars Facts -->
+            <div class="col-xs-4">
                 <div class="row" id="mars-facts">
-                    <h4>Mars Facts</h4>
-                    {{ mars.facts | safe }}
+                    <h2>Mars Facts</h2>
+                        <table class="table table-bordered">
+                            <td>{{ mars.facts | safe }}</td>
+                        </table>
                 </div>
             </div>
         </div>
         <!-- Mars Hemisphere Data -->
         <div class="row" id="mars-hemispheres">
-            <div class="col-md-8">
+            <div class="col-md-12 text-center">
+                <h2>Mars Hemispheres</h2>
+                <table class="table table-bordered">
+                    <td>
 
-                <center><h3>Mars Hemispheres</h3> </center>
-                <header>
-                    {% block header %}{% endblock %}
-                </header>
-                
-                {% for hemisphere_image_url in mars.hemisphere_image_urls %}
-                    
-                    <img
-                        src="{{ hemisphere_image_url.img_url }}"
-                        class="img-responsive"
-                        alt="Responsive image"
-                    />
-                    <div class="flash">{{ hemisphere_image_url.title }}</div>
-                {% endfor %}
-                
-                {% block content %}{% endblock %}
+                        {% for hemisphere_image_url in mars.hemisphere_image_urls %}
+                            <div class="col-md-3">
+                                    <a href="{{ hemisphere_image_url.img_url }}" target="_blank">
+                                    <img
+                                        src="{{ hemisphere_image_url.img_url }}"
+                                        class="img-thumbnail"
+                                        alt="Responsive image"
+                                    />
+                                    </a>
+                                    <h5 class="card-title">{{ hemisphere_image_url.title }}</h5>
+
+                            </div>
+                        {% endfor %}
+                    </td>
+                </table>
             </div>
         </div>
     </div>

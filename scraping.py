@@ -100,8 +100,8 @@ def mars_facts():
         return None
     
     # Assign columns and set index of dataframe
-    df.columns=['description', 'Mars', 'Earth']
-    df.set_index('description', inplace=True)
+    df.columns=['Description', 'Mars', 'Earth']
+    df.set_index('Description', inplace=True)
 
     #  convert our DataFrame back into HTML-ready code using the .to_html() function
     return df.to_html()
